@@ -5,13 +5,12 @@ import camp.nextstep.edu.missionutils.Randoms;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static camp.nextstep.edu.missionutils.Console.readLine;
 
 public class Application {
-
-    private Lotto lotto;
 
     public static void main(String[] args) {
         // TODO: 프로그램 구현
@@ -25,24 +24,30 @@ public class Application {
                 throw new IllegalArgumentException("1000원 단위로 나누어 떨어져야 합니다.");
             }
             var lottos = purchaseCost / 1000;
-            System.out.println(lottos+"개를 구매했습니다.");
+            System.out.println("\n"+lottos+"개를 구매했습니다.");
 
             for(int i=0;i<lottos;i++) {
     //            lottoNum[i].add(Randoms.pickNumberInRange(1, 45, 6));
                 System.out.println(Randoms.pickUniqueNumbersInRange(1, 45,6));
             }
 
-            System.out.println("당첨 번호를 입력해 주세요.");
+            System.out.println("\n당첨 번호를 입력해 주세요.");
             String winningNum = readLine();
-            String[] winningNumSplit = winningNum.split(",");
+            List<Integer> numbers = Arrays.stream(winningNum.split(","))
+                    .map(s-> s.trim())  // 문자열 앞뒤 공백 없애는 메서드
+                    .filter(s -> !s.isEmpty())
+                    .map(s -> Integer.parseInt(s))
+                    .toList();
 
-            System.out.println(winningNumSplit);
+            Lotto lotto = new Lotto(numbers);
 
-            System.out.println("보너스 번호를 입력해 주세요.");
+            System.out.println(numbers);
+
+            System.out.println("\n보너스 번호를 입력해 주세요.");
             int bonusNum = Integer.parseInt(readLine());
             
             // 출력
-            System.out.println("당첨 통계\n---");
+            System.out.println("\n당첨 통계\n---");
             for(int i =0;i<lottos;i++){
                 System.out.println("개 일치 ("+") - "+"개");
 
