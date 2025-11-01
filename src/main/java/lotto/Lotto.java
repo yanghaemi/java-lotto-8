@@ -1,12 +1,16 @@
 package lotto;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Lotto {
     private final List<Integer> numbers;
 
     public Lotto(List<Integer> numbers) {
         validate(numbers);
+        checkForDuplicates(numbers);
         this.numbers = numbers;
     }
 
@@ -18,6 +22,21 @@ public class Lotto {
 
     // TODO: 추가 기능 구현
 
+    private void checkForDuplicates(List<Integer> numbers){
+
+        Set<Integer> seen = new HashSet<>();
+        Set<Integer> dup = new LinkedHashSet<>();
+
+        for(int n : numbers){
+            if(!seen.add(n)){   // 중복이 되면 set은 false가 뜸
+                dup.add(n);     // 중복 해시셋에 넣어준다.
+            }
+        }
+
+        if(!dup.isEmpty()){
+            throw new IllegalArgumentException("[ERROR] 로또 번호는 중복 될 수 없습니다.");
+        }
+    }
 
     public int correct(List<Integer> lottoNumbers, int bonusNum){
         int correct= 0;
@@ -34,7 +53,6 @@ public class Lotto {
     }
 
     private int compare(int lottoNumber, int number, int correct){
-//        System.out.print("\nlottoNumber: "+lottoNumber+", number: "+number);
 
         if(lottoNumber == number){
             return ++correct;
