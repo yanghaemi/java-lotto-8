@@ -4,9 +4,7 @@ import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static camp.nextstep.edu.missionutils.Console.readLine;
 
@@ -23,12 +21,13 @@ public class Application {
             if(purchaseCost % 1000 != 0) {
                 throw new IllegalArgumentException("1000원 단위로 나누어 떨어져야 합니다.");
             }
-            var lottos = purchaseCost / 1000;
-            System.out.println("\n"+lottos+"개를 구매했습니다.");
+            var lottoes = purchaseCost / 1000;
+            System.out.println("\n"+lottoes+"개를 구매했습니다.");
 
-            for(int i=0;i<lottos;i++) {
-    //            lottoNum[i].add(Randoms.pickNumberInRange(1, 45, 6));
-                System.out.println(Randoms.pickUniqueNumbersInRange(1, 45,6));
+            List<List<Integer>> lottoNumbers = new ArrayList<>();
+            for(int i=0;i<lottoes;i++) {
+                lottoNumbers.add(i,Randoms.pickUniqueNumbersInRange(1, 45, 6));
+                System.out.println(lottoNumbers.get(i));
             }
 
             System.out.println("\n당첨 번호를 입력해 주세요.");
@@ -45,15 +44,25 @@ public class Application {
 
             System.out.println("\n보너스 번호를 입력해 주세요.");
             int bonusNum = Integer.parseInt(readLine());
-            
+
+            int sumPrizeMoney = 0; // 총 상금
+            List<Integer> result = new ArrayList<>(Arrays.asList(0,0,0,0,0));   // 각 등수에 당첨된 로또 개수
+            for(int i =0;i<lottoes;i++){
+                
+                int rank = lotto.correct(lottoNumbers.get(i), bonusNum);
+
+                if(rank > 0){
+                    int dump = result.get(rank-1);
+                    result.set(rank-1, ++dump);
+                    sumPrizeMoney += lotto.prizeMoney(rank);
+                }
+            }
+
+
             // 출력
             System.out.println("\n당첨 통계\n---");
-            for(int i =0;i<lottos;i++){
-                System.out.println("개 일치 ("+") - "+"개");
-
-                System.out.println("개 일치, 보너스 볼 일치 ("+") - "+"개");
-            }
-            System.out.println("총 수익률은 "+"%입니다.");
+            lotto.resultOutput(result);
+            lotto.rateOfReturn(purchaseCost, sumPrizeMoney);
         }catch(NumberFormatException e){
             throw new IllegalArgumentException("정수형 변환 실패");
         }
