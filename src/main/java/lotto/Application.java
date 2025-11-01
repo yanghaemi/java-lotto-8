@@ -48,7 +48,7 @@ public class Application {
             int sumPrizeMoney = 0; // 총 상금
             List<Integer> result = new ArrayList<>(Arrays.asList(0,0,0,0,0));   // 각 등수에 당첨된 로또 개수
             for(int i =0;i<lottoes;i++){
-                
+
                 int rank = lotto.correct(lottoNumbers.get(i), bonusNum);
 
                 if(rank > 0){

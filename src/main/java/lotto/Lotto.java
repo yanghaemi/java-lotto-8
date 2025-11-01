@@ -73,8 +73,7 @@ public class Lotto {
 
     public void rateOfReturn(int purchaseCost, int sumPrizeMoney){
         double rate = sumPrizeMoney/purchaseCost;
-        rate *= 100;
-        System.out.println("총 수익률은 "+ rate +"%입니다.");
+        System.out.println("총 수익률은 "+ Math.round(rate*100)/100.0 +"%입니다.");
     }
 
     public void resultOutput(List<Integer> result){
