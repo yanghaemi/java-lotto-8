@@ -1,7 +1,6 @@
 package lotto;
 
 import java.util.List;
-import java.util.Map;
 
 public class Lotto {
     private final List<Integer> numbers;
@@ -18,6 +17,7 @@ public class Lotto {
     }
 
     // TODO: 추가 기능 구현
+
 
     public int correct(List<Integer> lottoNumbers, int bonusNum){
         int correct= 0;
@@ -71,8 +71,11 @@ public class Lotto {
         return 0;
     }
 
-    public void rateOfReturn(int purchaseCost, int sumPrizeMoney){
+    public void rateOfReturn(int p_purchaseCost, int p_sumPrizeMoney){
+        double purchaseCost = p_purchaseCost;
+        double sumPrizeMoney = p_sumPrizeMoney;
         double rate = sumPrizeMoney/purchaseCost;
+        rate*=100;
         System.out.println("총 수익률은 "+ Math.round(rate*100)/100.0 +"%입니다.");
     }
 

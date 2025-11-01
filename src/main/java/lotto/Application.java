@@ -1,6 +1,5 @@
 package lotto;
 
-import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 
 
@@ -12,21 +11,21 @@ public class Application {
 
     public static void main(String[] args) {
         // TODO: 프로그램 구현
-        System.out.println("구입금액을 입력해 주세요.");
-        int purchaseCost;
-        try {
 
-            purchaseCost = Integer.parseInt(readLine());    // 구입 금액
+        try {
+            System.out.println("구입금액을 입력해 주세요.");
+            int purchaseCost = Integer.parseInt(readLine());    // 구입 금액
 
             if(purchaseCost % 1000 != 0) {
                 throw new IllegalArgumentException("1000원 단위로 나누어 떨어져야 합니다.");
             }
-            var lottoes = purchaseCost / 1000;
+            int lottoes = purchaseCost / 1000;
             System.out.println("\n"+lottoes+"개를 구매했습니다.");
 
             List<List<Integer>> lottoNumbers = new ArrayList<>();
             for(int i=0;i<lottoes;i++) {
                 lottoNumbers.add(i,Randoms.pickUniqueNumbersInRange(1, 45, 6));
+                lottoNumbers.get(i).sort(Comparator.naturalOrder());
                 System.out.println(lottoNumbers.get(i));
             }
 
