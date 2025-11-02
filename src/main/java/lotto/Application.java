@@ -19,7 +19,7 @@ public class Application {
             int purchaseCost = Integer.parseInt(readLine());    // 구입 금액
 
             if(purchaseCost % 1000 != 0) {
-                throw new IllegalArgumentException("1000원 단위로 나누어 떨어져야 합니다.");
+                throw new IllegalArgumentException("[ERROR] 1000원 단위로 나누어 떨어져야 합니다.");
             }
             int lottoes = purchaseCost / 1000;
             System.out.println("\n"+lottoes+"개를 구매했습니다.");
@@ -50,26 +50,24 @@ public class Application {
             System.out.println("\n보너스 번호를 입력해 주세요.");
             int bonusNum = Integer.parseInt(readLine());
 
+            Map<Lotto.Rank, Integer> counts = new EnumMap<>(Lotto.Rank.class);
             int sumPrizeMoney = 0; // 총 상금
             List<Integer> result = new ArrayList<>(Arrays.asList(0,0,0,0,0));   // 각 등수에 당첨된 로또 개수
             for(int i =0;i<lottoes;i++){
-
-                int rank = lotto.correct(lottoNumbers.get(i), bonusNum);
-
-                if(rank > 0){
-                    int dump = result.get(rank-1);
-                    result.set(rank-1, ++dump);
-                    sumPrizeMoney += lotto.prizeMoney(rank);
+                Lotto.Rank rank = lotto.correct(lottoNumbers.get(i), bonusNum); // Rank 반환
+                if (rank != Lotto.Rank.NONE) {
+                    counts.merge(rank, 1, Integer::sum);        // 개수 +1
+                    sumPrizeMoney += rank.getPrize();           // 상금 누적
                 }
             }
 
 
             // 출력
             System.out.println("\n당첨 통계\n---");
-            lotto.resultOutput(result);
+            lotto.resultOutput(counts);
             lotto.rateOfReturn(purchaseCost, sumPrizeMoney);
         }catch(NumberFormatException e){
-            throw new IllegalArgumentException("정수형 변환 실패");
+            System.out.println("[ERROR] 정수형 변환 오류");
         }
     }
 }
