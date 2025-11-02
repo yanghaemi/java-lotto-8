@@ -26,8 +26,10 @@ public class Application {
 
             List<List<Integer>> lottoNumbers = new ArrayList<>();
             for(int i=0;i<lottoes;i++) {
-                lottoNumbers.add(i,Randoms.pickUniqueNumbersInRange(1, 45, 6));
-                lottoNumbers.get(i).sort(Comparator.naturalOrder());
+                List<Integer> raw = Randoms.pickUniqueNumbersInRange(1, 45, 6); // 랜덤 리스트가 불변 리스트라서
+                List<Integer> ticket = new ArrayList<>(raw);    // 복사를 해준 뒤, 정렬하여 lottoNumbers에 추가
+                ticket.sort(Comparator.naturalOrder());
+                lottoNumbers.add(ticket);
                 System.out.println(lottoNumbers.get(i));
             }
 
